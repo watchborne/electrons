@@ -1,5 +1,5 @@
 {
-  "name": "@watchborne/design-system",
+  "name": "@watchborne/electrons",
   "version": "0.1.0",
   "description": "Watchborne shared React component library (design tokens + UI primitives).",
   "license": "UNLICENSED",

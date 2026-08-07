@@ -1,16 +1,16 @@
 /**
- * Tailwind preset for consumers of @watchborne/design-system.
+ * Tailwind preset for consumers of @watchborne/electrons.
  *
  * Usage (tailwind.config.js):
  *   module.exports = {
- *     presets: [require("@watchborne/design-system/tailwind-preset")],
+ *     presets: [require("@watchborne/electrons/tailwind-preset")],
  *     content: [
  *       "./app/**\/*.{js,ts,jsx,tsx}",
- *       "./node_modules/@watchborne/design-system/dist/**\/*.{js,mjs}",
+ *       "./node_modules/@watchborne/electrons/dist/**\/*.{js,mjs}",
  *     ],
  *   };
  *
- * Pair this with the CSS variables from `@watchborne/design-system/tokens.css`
+ * Pair this with the CSS variables from `@watchborne/electrons/tokens.css`
  * (imported once, e.g. in a root layout) — the color tokens below all resolve
  * through `hsl(var(--token))`.
  */

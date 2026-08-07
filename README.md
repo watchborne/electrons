@@ -1,7 +1,7 @@
-# 🎨 watchborne/design-system
+# 🎨 watchborne/electrons
 
 Shared React component library and design tokens for the watchborne EV
-charge-point platform (`@watchborne/design-system`). Ships the UI primitives
+charge-point platform (`@watchborne/electrons`). Ships the UI primitives
 and tokens that are reused across watchborne front-end apps (starting with
 `charge-points-frontend`), so they have a single source of truth instead of
 being duplicated per app.
@@ -29,11 +29,11 @@ being duplicated per app.
 ## 📦 Using the package in an app
 
 ```bash
-npm install @watchborne/design-system
+npm install @watchborne/electrons
 ```
 
 ```tsx
-import { Button, Badge, Callout } from "@watchborne/design-system";
+import { Button, Badge, Callout } from "@watchborne/electrons";
 
 export const Example = () => (
   <Callout variant="success" title="Saved">
@@ -50,7 +50,7 @@ render correctly, a consuming app needs:
 1. The design tokens, once (e.g. in a root layout):
 
    ```ts
-   import "@watchborne/design-system/tokens.css";
+   import "@watchborne/electrons/tokens.css";
    ```
 
 2. The Tailwind preset, so the utility classes used inside the package are
@@ -59,10 +59,10 @@ render correctly, a consuming app needs:
    ```js
    // tailwind.config.js
    module.exports = {
-     presets: [require("@watchborne/design-system/tailwind-preset")],
+     presets: [require("@watchborne/electrons/tailwind-preset")],
      content: [
        "./app/**/*.{js,ts,jsx,tsx}",
-       "./node_modules/@watchborne/design-system/dist/**/*.{js,mjs}",
+       "./node_modules/@watchborne/electrons/dist/**/*.{js,mjs}",
      ],
    };
    ```

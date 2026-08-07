@@ -4,8 +4,8 @@ Guidance for AI coding agents working in this repository.
 
 ## What this is
 
-`watchborne-design-system` — a standalone React component library
-(`@watchborne/design-system`), published to GitHub Packages, holding the UI
+`@watchborne/electrons` — a standalone React component library
+(`@watchborne/electrons`), published to GitHub Packages, holding the UI
 primitives and design tokens shared across watchborne front-end apps. It is
 not a Next.js app: it has no routes, no pages, and no server — it only
 exports React components, a Tailwind preset, and a CSS tokens file for other
@@ -31,7 +31,7 @@ src/
   index.ts              # the package's public API — every exported symbol
                         #   must be re-exported from here
 tailwind-preset.js       # Tailwind `theme.extend` consumers plug in via
-                        #   `presets: [require("@watchborne/design-system/tailwind-preset")]`
+                        #   `presets: [require("@watchborne/electrons/tailwind-preset")]`
 tsup.config.ts           # build config — bundles src/index.ts to dist/, banners
                         #   the output with "use client" (see below)
 ```
@@ -69,12 +69,12 @@ directives, they would be redundant and the banner already covers it.
 `app/design-system/tokens.css`, not a live link — the two currently need to
 be kept in sync by hand when tokens change. If this drifts enough to hurt,
 the fix is to make `charge-points-frontend` consume
-`@watchborne/design-system/tokens.css` directly instead of keeping its own
+`@watchborne/electrons/tokens.css` directly instead of keeping its own
 copy — that migration hasn't happened yet.
 
 ### Publishing
 
-The package is scoped `@watchborne/design-system` and installs from GitHub
+The package is scoped `@watchborne/electrons` and installs from GitHub
 Packages (`@watchborne:registry=https://npm.pkg.github.com` in `.npmrc`,
 same as `charge-points-frontend`'s `@watchborne/charge-points-types`
 dependency). There is no publish workflow wired up yet — that, and bumping
