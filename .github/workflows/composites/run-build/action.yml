@@ -1,0 +1,12 @@
+name: "Run build"
+description: "Build the component library"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: ./.github/workflows/composites/install-dependencies
+
+    - name: Run build
+      run: npm run build
+      shell: bash

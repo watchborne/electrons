@@ -1,0 +1,12 @@
+name: "Run unit tests"
+description: "Run unit tests"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: ./.github/workflows/composites/install-dependencies
+
+    - name: Run tests
+      run: npm run test:ci
+      shell: bash
