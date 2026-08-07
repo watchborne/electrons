@@ -1,0 +1,53 @@
+name: Build, Lint, Format and Tests for Pull Requests
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+  statuses: write
+
+# Supersede in-flight runs when a PR is pushed to again — cancel-in-progress is
+# scoped to pull_request events so every commit landed on main is still verified.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  lint-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run lint and format
+        uses: ./.github/workflows/composites/run-lint-format
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run typecheck
+        uses: ./.github/workflows/composites/run-typecheck
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run build
+        uses: ./.github/workflows/composites/run-build
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run unit tests
+        uses: ./.github/workflows/composites/run-tests/unit

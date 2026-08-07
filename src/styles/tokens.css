@@ -1,0 +1,146 @@
+/* ============================================================================
+ * Watchborne Design System — v1.0
+ * Single source of truth for the design language shared by the marketing site,
+ * the authenticated app, and the auth screens (login / signup).
+ *
+ * Everything is expressed as HSL channel triplets (`H S% L%`) with no `hsl()`
+ * wrapper so that Tailwind can apply opacity modifiers (`bg-charge/90`) and
+ * ring utilities. Consume tokens through the Tailwind classes wired in
+ * `tailwind.config.js` — never hardcode raw colours (`bg-green-500`, …) in
+ * components.
+ *
+ * Layers:
+ *   1. Semantic UI tokens (shadcn/ui contract) — neutral slate base.
+ *   2. Brand accent — "Charge Amber".
+ *   3. Charge-point status tones — one palette, consumed via lib/status.
+ *   4. Typography / radius / shadow / spacing.
+ * ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  /* -- 1. Semantic UI (light) — clean slate, matches the login aesthetic -- */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+
+  /* -- 2. Brand accent — "Charge Amber" -- */
+  --charge: 38 92% 50%; /* solid accent (CTAs, active elements) */
+  --charge-foreground: 26 83% 14%; /* text/icon on a solid amber surface */
+  --charge-soft: 45 93% 92%; /* tinted accent surface (chips, callouts) */
+  --charge-strong: 26 84% 33%; /* accent text/icon on a light surface (AA) */
+
+  /* -- 3. Charge-point status tones --
+   * Each tone: `-DEFAULT` (solid dot/icon), `-soft` (pill background),
+   * `-foreground` (text/icon on the soft or light surface, AA on white).
+   * Enum values map onto these tones in `lib/status.ts`. */
+  --status-available: 152 60% 40%;
+  --status-available-soft: 152 55% 94%;
+  --status-available-foreground: 153 64% 26%;
+
+  --status-charging: 214 90% 52%;
+  --status-charging-soft: 214 95% 95%;
+  --status-charging-foreground: 214 80% 40%;
+
+  --status-pending: 38 92% 50%;
+  --status-pending-soft: 45 93% 92%;
+  --status-pending-foreground: 30 84% 33%;
+
+  --status-warning: 25 90% 52%;
+  --status-warning-soft: 28 95% 94%;
+  --status-warning-foreground: 24 80% 36%;
+
+  --status-error: 0 72% 51%;
+  --status-error-soft: 0 86% 96%;
+  --status-error-foreground: 0 65% 42%;
+
+  --status-offline: 215 16% 47%;
+  --status-offline-soft: 214 32% 93%;
+  --status-offline-foreground: 215 19% 35%;
+
+  --status-reserved: 262 60% 58%;
+  --status-reserved-soft: 262 65% 96%;
+  --status-reserved-foreground: 262 45% 45%;
+
+  /* -- 4. Typography / radius / shadow / spacing -- */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 38, 0.04), 0 1px 8px rgba(16, 24, 38, 0.04);
+}
+
+.dark {
+  /* -- 1. Semantic UI (dark) -- */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+
+  /* -- 2. Brand accent -- */
+  --charge: 38 92% 52%;
+  --charge-foreground: 26 83% 12%;
+  --charge-soft: 30 40% 16%;
+  --charge-strong: 42 95% 62%;
+
+  /* -- 3. Status tones (dark) — brighter solids, deep soft surfaces -- */
+  --status-available: 152 55% 48%;
+  --status-available-soft: 153 45% 14%;
+  --status-available-foreground: 152 55% 65%;
+
+  --status-charging: 214 90% 60%;
+  --status-charging-soft: 214 60% 16%;
+  --status-charging-foreground: 214 90% 72%;
+
+  --status-pending: 38 92% 55%;
+  --status-pending-soft: 32 55% 15%;
+  --status-pending-foreground: 42 95% 62%;
+
+  --status-warning: 25 90% 58%;
+  --status-warning-soft: 24 55% 15%;
+  --status-warning-foreground: 28 90% 65%;
+
+  --status-error: 0 72% 58%;
+  --status-error-soft: 0 45% 16%;
+  --status-error-foreground: 0 80% 72%;
+
+  --status-offline: 215 16% 55%;
+  --status-offline-soft: 217 33% 17%;
+  --status-offline-foreground: 215 20% 70%;
+
+  --status-reserved: 262 60% 65%;
+  --status-reserved-soft: 262 35% 18%;
+  --status-reserved-foreground: 262 70% 75%;
+}

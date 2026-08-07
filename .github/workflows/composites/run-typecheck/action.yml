@@ -1,0 +1,12 @@
+name: "Run typecheck"
+description: "Run TS type checker"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: ./.github/workflows/composites/install-dependencies
+
+    - name: Run typecheck
+      run: npm run typecheck
+      shell: bash

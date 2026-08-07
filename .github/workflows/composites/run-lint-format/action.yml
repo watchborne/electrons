@@ -1,0 +1,16 @@
+name: "Run lint and format"
+description: "Run eslint and prettier"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: ./.github/workflows/composites/install-dependencies
+
+    - name: Run lint
+      run: npm run lint
+      shell: bash
+
+    - name: Check formatting
+      run: npm run format:check
+      shell: bash
