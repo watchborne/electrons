@@ -1,0 +1,149 @@
+name: Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., 1.2.3 or v1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  setup-and-bump:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.setup.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Normalize and validate version
+        id: setup
+        run: |
+          INPUT_VERSION="${{ github.event.inputs.version }}"
+          # Remove 'v' prefix if present
+          VERSION="${INPUT_VERSION#v}"
+          # Validate semver format
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format: $INPUT_VERSION. Expected: major.minor.patch (e.g., 1.2.3)"
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Bump version in package.json
+        run: |
+          npm version ${{ steps.setup.outputs.version }} --no-git-tag-version
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.setup.outputs.version }}"
+
+      - name: Create and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          git tag "${{ steps.setup.outputs.tag }}"
+          git push origin HEAD:main
+          git push origin "${{ steps.setup.outputs.tag }}"
+
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - setup-and-bump
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.version }}
+
+      - name: Install dependencies
+        uses: ./.github/workflows/composites/install-dependencies
+
+      - name: Run checks
+        run: |
+          npm run lint
+          npm run format:check
+          npm run typecheck
+          npm run test:ci
+
+      - name: Build
+        run: npm run build
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - setup-and-bump
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.setup-and-bump.outputs.version }}
+
+      - name: Install dependencies
+        uses: ./.github/workflows/composites/install-dependencies
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to GitHub Packages
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs:
+      - publish
+      - setup-and-bump
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.setup-and-bump.outputs.tag }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.setup-and-bump.outputs.tag }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify-dependents:
+    runs-on: ubuntu-latest
+    needs:
+      - create-release
+      - setup-and-bump
+    steps:
+      - name: Notify charge-points-frontend
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.setup-and-bump.outputs.tag }}
+        run: |
+          gh api repos/watchborne/charge-points-frontend/dispatches \
+            -f event_type=electrons-released \
+            -f "client_payload[version]=$VERSION"
