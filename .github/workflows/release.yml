@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Setup Git
         run: |
@@ -52,9 +53,11 @@ jobs:
           git commit -m "chore: bump version to ${{ steps.setup.outputs.version }}"
 
       - name: Create and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           git tag "${{ steps.setup.outputs.tag }}"
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin HEAD:main
           git push origin "${{ steps.setup.outputs.tag }}"
 
   build:
