@@ -20,4 +20,3 @@ export { Tag } from "./components/tag";
 export { Loader } from "./components/loader";
 export { Skeleton } from "./components/skeleton";
 export { StatCard } from "./components/stat-card";
-export { ThemeSwitcher, type Theme, type ThemeSwitcherProps } from "./components/theme-switcher";
