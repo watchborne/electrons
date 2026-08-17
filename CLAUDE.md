@@ -63,22 +63,12 @@ primitives). Rather than annotating each file, `tsup.config.ts` banners the
 whole bundle with `"use client"` — do not add per-file `"use client"`
 directives, they would be redundant and the banner already covers it.
 
-### Design tokens
-
-`src/styles/tokens.css` is a **copy** of `charge-points-frontend`'s
-`app/design-system/tokens.css`, not a live link — the two currently need to
-be kept in sync by hand when tokens change. If this drifts enough to hurt,
-the fix is to make `charge-points-frontend` consume
-`@watchborne/electrons/tokens.css` directly instead of keeping its own
-copy — that migration hasn't happened yet.
-
 ### Publishing
 
 The package is scoped `@watchborne/electrons` and installs from GitHub
 Packages (`@watchborne:registry=https://npm.pkg.github.com` in `.npmrc`,
 same as `charge-points-frontend`'s `@watchborne/charge-points-types`
-dependency). There is no publish workflow wired up yet — that, and bumping
-the consuming apps to a published version, is follow-up work.
+dependency).
 
 ## Commands
 
