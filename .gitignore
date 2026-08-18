@@ -24,3 +24,6 @@ coverage/
 
 # Test files
 /junit-reports/
+
+# Package tarballs
+*.tgz
