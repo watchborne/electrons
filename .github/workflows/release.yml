@@ -173,7 +173,30 @@ jobs:
           # HEAD is tagged with the release version, so conventional-changelog
           # treats that tag as an already-published release. Use --release-count 2
           # so the release being cut (previous tag..current tag) is included.
-          CHANGELOG=$(conventional-changelog -p angular --release-count 2 | awk '/^# /{c++} c<2')
+          #
+          # v0.2.2's and v0.3.0's bodies came out empty because the
+          # conventional subject lives on the PR merge commit here, and
+          # conventional-changelog drops merge commits unless told otherwise
+          # (scripts/changelog-config.mjs).
+          #
+          # The section wanted is also at no fixed position or header level:
+          # the Angular writer heads a release `# ` when its patch is 0 and
+          # `## ` otherwise, and an empty "still unreleased" section can
+          # precede the real one. So take the first section (either level)
+          # with non-blank content under its header, the filter
+          # watchborne/charge-points-frontend and charge-points-server settled
+          # on (see the latter's #377/#382).
+          CHANGELOG=$(conventional-changelog -p angular -n scripts/changelog-config.mjs --release-count 2 | awk '
+            /^# |^## / {
+              if (has_content) { print header; print body; exit }
+              header = $0; body = ""; has_content = 0; next
+            }
+            {
+              body = body $0 "\n"
+              if ($0 !~ /^[[:space:]]*$/) has_content = 1
+            }
+            END { if (has_content) { print header; print body } }
+          ')
           if [ -z "$(printf '%s' "$CHANGELOG" | tr -d '[:space:]')" ]; then
             CHANGELOG="Release ${{ needs.setup-and-bump.outputs.tag }}"
           fi
