@@ -1,6 +1,6 @@
 {
   "name": "@watchborne/electrons",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Watchborne shared React component library (design tokens + UI primitives).",
   "license": "UNLICENSED",
   "private": false,
