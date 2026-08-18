@@ -17,6 +17,12 @@ export {
 } from "./components/table";
 export { Callout, type CalloutVariant } from "./components/callout";
 export { Tag } from "./components/tag";
+export {
+  StatusPill,
+  STATUS_TONES,
+  type StatusTone,
+  type StatusPillProps,
+} from "./components/status-pill";
 export { Loader } from "./components/loader";
 export { Skeleton } from "./components/skeleton";
 export { StatCard } from "./components/stat-card";
