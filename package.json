@@ -30,6 +30,7 @@
   },
   "scripts": {
     "build": "tsup && node scripts/prepend-use-client.mjs && cp src/styles/tokens.css dist/tokens.css",
+    "prepack": "npm run build",
     "dev": "tsup --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
