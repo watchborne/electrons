@@ -60,9 +60,9 @@ export interface StatusPillProps extends React.HTMLAttributes<HTMLSpanElement> {
  * The tinted-pill-with-a-dot pattern shared by every charge-point-status
  * badge in `charge-points-frontend` (`StatusBadge`, `SiteHealthBadge`,
  * `AlertStatusBadge`) — promoted here since only the domain-to-tone mapping
- * and label text ever differed between them (issue #7). Consumers own that
- * mapping (e.g. a `connectionStatusTone`-style function) and pass the
- * resulting tone plus whatever label/content they want as `children`.
+ * and label text ever differed between them. Consumers own that mapping
+ * (e.g. a `connectionStatusTone`-style function) and pass the resulting tone
+ * plus whatever label/content they want as `children`.
  */
 export const StatusPill = ({ tone, className, children, ...props }: StatusPillProps) => (
   <span className={classNames(statusPillVariants({ tone }), className)} {...props}>
