@@ -6,4 +6,20 @@
 // --no-merges by default, so it saw only the free-form commits and produced
 // empty release bodies. Keep merge commits: the non-conventional ones on both
 // sides are dropped by the preset anyway.
-export default { gitRawCommitsOpts: { merges: null } };
+//
+// Accepts all conventional commit prefixes (feat, fix, chore, refactor, etc.)
+// in formats: "prefix(scope): message" or "prefix: message"
+export default {
+  gitRawCommitsOpts: { merges: null },
+  types: [
+    { type: "feat", section: "✨ Features", hidden: false },
+    { type: "fix", section: "🐛 Bug Fixes", hidden: false },
+    { type: "perf", section: "⚡ Performance Improvements", hidden: false },
+    { type: "refactor", section: "♻️ Code Refactoring", hidden: false },
+    { type: "chore", section: "🔧 Chores", hidden: false },
+    { type: "style", section: "💅 Styling", hidden: false },
+    { type: "test", section: "✅ Tests", hidden: false },
+    { type: "docs", section: "📚 Documentation", hidden: false },
+    { type: "ci", section: "⚙️ CI/CD", hidden: false },
+  ],
+};
