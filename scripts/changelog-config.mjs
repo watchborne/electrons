@@ -17,9 +17,9 @@ export default {
     { type: "perf", section: "⚡ Performance Improvements", hidden: false },
     { type: "refactor", section: "♻️ Code Refactoring", hidden: false },
     { type: "chore", section: "🔧 Chores", hidden: false },
-    { type: "style", section: "💅 Styling", hidden: true },
-    { type: "test", section: "✅ Tests", hidden: true },
-    { type: "docs", section: "📚 Documentation", hidden: true },
-    { type: "ci", section: "⚙️ CI/CD", hidden: true },
+    { type: "style", section: "💅 Styling", hidden: false },
+    { type: "test", section: "✅ Tests", hidden: false },
+    { type: "docs", section: "📚 Documentation", hidden: false },
+    { type: "ci", section: "⚙️ CI/CD", hidden: false },
   ],
 };
