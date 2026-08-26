@@ -129,7 +129,7 @@ jobs:
           TARBALL: watchborne-electrons-${{ needs.setup-and-bump.outputs.version }}.tgz
         run: |
           npm pack
-          for entry in dist/index.js dist/index.cjs dist/index.d.ts dist/index.d.cts dist/tokens.css tailwind-preset.js; do
+          for entry in dist/index.js dist/index.cjs dist/index.d.ts dist/index.d.cts dist/tokens.css tailwind-preset.cjs; do
             if ! tar -tzf "$TARBALL" | grep -qx "package/$entry"; then
               echo "::error::$entry is missing from $TARBALL - the published package would be unusable"
               exit 1

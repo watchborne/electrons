@@ -18,12 +18,12 @@
       "require": "./dist/index.cjs"
     },
     "./tokens.css": "./dist/tokens.css",
-    "./tailwind-preset": "./tailwind-preset.js",
+    "./tailwind-preset": "./tailwind-preset.cjs",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "tailwind-preset.js"
+    "tailwind-preset.cjs"
   ],
   "engines": {
     "node": ">= 22.5"

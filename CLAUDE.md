@@ -30,7 +30,7 @@ src/
                         #   charge-points-frontend's app/design-system/tokens.css
   index.ts              # the package's public API — every exported symbol
                         #   must be re-exported from here
-tailwind-preset.js       # Tailwind `theme.extend` consumers plug in via
+tailwind-preset.cjs      # Tailwind `theme.extend` consumers plug in via
                         #   `presets: [require("@watchborne/electrons/tailwind-preset")]`
 tsup.config.ts           # build config — bundles src/index.ts to dist/, banners
                         #   the output with "use client" (see below)
@@ -46,7 +46,7 @@ tsup.config.ts           # build config — bundles src/index.ts to dist/, banne
    not just `charge-points-frontend`. If a component needs copy/text, take it
    as props (do not bake in translations).
 2. Style with Tailwind utility classes referencing the tokens in
-   `src/styles/tokens.css` / `tailwind-preset.js` (e.g. `bg-primary`,
+   `src/styles/tokens.css` / `tailwind-preset.cjs` (e.g. `bg-primary`,
    `text-muted-foreground`) — never hardcode raw colors.
 3. Re-export it from `src/index.ts`.
 4. Add a smoke test in `src/components/__tests__/<name>.test.tsx`.

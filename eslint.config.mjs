@@ -47,7 +47,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["*.config.{js,mjs,ts}", "tailwind-preset.js"],
+    files: ["*.config.{js,mjs,ts}", "tailwind-preset.cjs"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",
       "no-undef": "off",
