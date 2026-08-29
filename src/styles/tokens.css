@@ -47,37 +47,37 @@
   --charge-soft: 45 93% 92%; /* tinted accent surface (chips, callouts) */
   --charge-strong: 26 84% 33%; /* accent text/icon on a light surface (AA) */
 
-  /* -- 3. Charge-point status tones --
-   * Each tone: `-DEFAULT` (solid dot/icon), `-soft` (pill background),
+  /* -- 3. Generic color palette --
+   * Each color: `-DEFAULT` (solid dot/icon), `-soft` (pill background),
    * `-foreground` (text/icon on the soft or light surface, AA on white).
-   * Enum values map onto these tones in `lib/status.ts`. */
-  --status-available: 152 60% 40%;
-  --status-available-soft: 152 55% 94%;
-  --status-available-foreground: 153 64% 26%;
+   * Consumers map their domain status enums onto these colors. */
+  --green: 152 60% 40%;
+  --green-soft: 152 55% 94%;
+  --green-foreground: 153 64% 26%;
 
-  --status-charging: 214 90% 52%;
-  --status-charging-soft: 214 95% 95%;
-  --status-charging-foreground: 214 80% 40%;
+  --blue: 214 90% 52%;
+  --blue-soft: 214 95% 95%;
+  --blue-foreground: 214 80% 40%;
 
-  --status-pending: 38 92% 50%;
-  --status-pending-soft: 45 93% 92%;
-  --status-pending-foreground: 30 84% 33%;
+  --amber: 38 92% 50%;
+  --amber-soft: 45 93% 92%;
+  --amber-foreground: 30 84% 33%;
 
-  --status-warning: 25 90% 52%;
-  --status-warning-soft: 28 95% 94%;
-  --status-warning-foreground: 24 80% 36%;
+  --orange: 25 90% 52%;
+  --orange-soft: 28 95% 94%;
+  --orange-foreground: 24 80% 36%;
 
-  --status-error: 0 72% 51%;
-  --status-error-soft: 0 86% 96%;
-  --status-error-foreground: 0 65% 42%;
+  --red: 0 72% 51%;
+  --red-soft: 0 86% 96%;
+  --red-foreground: 0 65% 42%;
 
-  --status-offline: 215 16% 47%;
-  --status-offline-soft: 214 32% 93%;
-  --status-offline-foreground: 215 19% 35%;
+  --gray: 215 16% 47%;
+  --gray-soft: 214 32% 93%;
+  --gray-foreground: 215 19% 35%;
 
-  --status-reserved: 262 60% 58%;
-  --status-reserved-soft: 262 65% 96%;
-  --status-reserved-foreground: 262 45% 45%;
+  --purple: 262 60% 58%;
+  --purple-soft: 262 65% 96%;
+  --purple-foreground: 262 45% 45%;
 
   /* -- 4. Typography / radius / shadow / spacing -- */
   --font-display: "Space Grotesk", sans-serif;
@@ -115,32 +115,32 @@
   --charge-soft: 30 40% 16%;
   --charge-strong: 42 95% 62%;
 
-  /* -- 3. Status tones (dark) — brighter solids, deep soft surfaces -- */
-  --status-available: 152 55% 48%;
-  --status-available-soft: 153 45% 14%;
-  --status-available-foreground: 152 55% 65%;
+  /* -- 3. Generic color palette (dark) — brighter solids, deep soft surfaces -- */
+  --green: 152 55% 48%;
+  --green-soft: 153 45% 14%;
+  --green-foreground: 152 55% 65%;
 
-  --status-charging: 214 90% 60%;
-  --status-charging-soft: 214 60% 16%;
-  --status-charging-foreground: 214 90% 72%;
+  --blue: 214 90% 60%;
+  --blue-soft: 214 60% 16%;
+  --blue-foreground: 214 90% 72%;
 
-  --status-pending: 38 92% 55%;
-  --status-pending-soft: 32 55% 15%;
-  --status-pending-foreground: 42 95% 62%;
+  --amber: 38 92% 55%;
+  --amber-soft: 32 55% 15%;
+  --amber-foreground: 42 95% 62%;
 
-  --status-warning: 25 90% 58%;
-  --status-warning-soft: 24 55% 15%;
-  --status-warning-foreground: 28 90% 65%;
+  --orange: 25 90% 58%;
+  --orange-soft: 24 55% 15%;
+  --orange-foreground: 28 90% 65%;
 
-  --status-error: 0 72% 58%;
-  --status-error-soft: 0 45% 16%;
-  --status-error-foreground: 0 80% 72%;
+  --red: 0 72% 58%;
+  --red-soft: 0 45% 16%;
+  --red-foreground: 0 80% 72%;
 
-  --status-offline: 215 16% 55%;
-  --status-offline-soft: 217 33% 17%;
-  --status-offline-foreground: 215 20% 70%;
+  --gray: 215 16% 55%;
+  --gray-soft: 217 33% 17%;
+  --gray-foreground: 215 20% 70%;
 
-  --status-reserved: 262 60% 65%;
-  --status-reserved-soft: 262 35% 18%;
-  --status-reserved-foreground: 262 70% 75%;
+  --purple: 262 60% 65%;
+  --purple-soft: 262 35% 18%;
+  --purple-foreground: 262 70% 75%;
 }
