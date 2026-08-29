@@ -18,6 +18,10 @@ export {
 export { Callout, type CalloutVariant } from "./components/callout";
 export { Tag } from "./components/tag";
 export {
+  ColorPill,
+  COLOR_NAMES,
+  type ColorName,
+  type ColorPillProps,
   StatusPill,
   STATUS_TONES,
   type StatusTone,
