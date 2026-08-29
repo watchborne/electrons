@@ -68,12 +68,14 @@ export const ColorPill = ({ color, className, children, ...props }: ColorPillPro
 export const STATUS_TONES = COLOR_NAMES;
 export type StatusTone = ColorName;
 
-export interface StatusPillProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface StatusPillProps {
   tone: ColorName;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-export const StatusPill = ({ tone, className, children, ...props }: StatusPillProps) => (
-  <ColorPill color={tone} className={className} {...props}>
+export const StatusPill = ({ tone, className, children }: StatusPillProps) => (
+  <ColorPill color={tone} className={className}>
     {children}
   </ColorPill>
 );
