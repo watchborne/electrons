@@ -1,0 +1,38 @@
+name: "Run checks"
+description: "Install once, then run lint, format, typecheck, build and unit tests in a single job"
+
+# Every check here is a few seconds of real work behind the same npm ci, and
+# GitHub Actions bills per job rounded UP to the whole minute — four separate
+# jobs (lint-format, typecheck, build, unit-tests) billed four minutes for
+# well under one minute of actual work, three quarters of it re-running the
+# same install. They share one job now, following the same sizing already
+# applied in charge-points-server and charge-points-frontend's own workflows.
+#
+# Lint and format run first: they fail fastest and catch the most common
+# mistakes, so a broken PR reports without waiting on tsc or the build.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: ./.github/workflows/composites/install-dependencies
+
+    - name: Run lint
+      run: npm run lint
+      shell: bash
+
+    - name: Check formatting
+      run: npm run format:check
+      shell: bash
+
+    - name: Run typecheck
+      run: npm run typecheck
+      shell: bash
+
+    - name: Run build
+      run: npm run build
+      shell: bash
+
+    - name: Run unit tests
+      run: npm run test:ci
+      shell: bash
