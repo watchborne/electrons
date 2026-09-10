@@ -1,10 +1,15 @@
 name: Build, Lint, Format and Tests for Pull Requests
 
+# Pull requests only. There is deliberately no `push: main` trigger: a
+# `pull_request` run tests the merge ref (PR head already merged into base),
+# so re-running everything after the merge re-verifies a tree that was just
+# verified. Nothing downstream depended on it either — this package only
+# publishes on a manual `workflow_dispatch` (release.yml), never off a push
+# to main. `main`'s branch protection requires branches to be up to date
+# before merging, which is what makes the merge-ref result trustworthy at
+# merge time — see charge-points-server's and charge-points-frontend's own
+# workflows for the same reasoning.
 on:
-  push:
-    branches:
-      - main
-
   pull_request:
 
 permissions:
@@ -13,11 +18,10 @@ permissions:
   pull-requests: write
   statuses: write
 
-# Supersede in-flight runs when a PR is pushed to again — cancel-in-progress is
-# scoped to pull_request events so every commit landed on main is still verified.
+# Supersede in-flight runs when a PR is pushed to again.
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   lint-format:
