@@ -55,6 +55,19 @@ tsup.config.ts           # build config — bundles src/index.ts to dist/, banne
    stay small and load-bearing, not a dumping ground for one-off feature
    components.
 
+### Deprecating a component
+
+`status-pill.tsx` is the worked example. `ColorPill` (`COLOR_NAMES` /
+`ColorName`) is the current primitive for the tinted-pill-with-a-dot
+pattern; `StatusPill` (`STATUS_TONES` / `StatusTone`) is kept only as a
+backward-compatibility alias over it for gradual migration — new code should
+reach for `ColorPill` directly. `charge-points-frontend` has already
+finished that migration: both its status badges (`StatusBadge`,
+`GenericStatusBadge`) call `ColorPill`, and neither imports `StatusPill`
+anymore. Keep a deprecated export like this working (its own test file
+labels the block `"StatusPill (backward compatibility)"`) rather than
+removing it outright, until nothing depends on it.
+
 ### "use client"
 
 Every component in this package is assumed to run inside a client boundary in
@@ -86,9 +99,14 @@ npm run all-checks  # scripts/all-checks.sh - runs the full CI suite locally
 ```
 
 CI (`.github/workflows/build-test-pull-request.yml`) runs lint/format,
-typecheck, build, and unit tests — keep them green. A Husky pre-commit hook
-runs `lint-staged`, which applies Prettier to staged files and, for staged
-`.ts/.tsx/.js/.jsx` files, ESLint (`--fix`) followed by
+typecheck, build, and unit tests — keep them green. They share a single
+`checks` job: GitHub Actions bills per job rounded up to the whole minute,
+and each check here is only seconds of real work behind the same `npm ci`,
+so splitting them back into separate jobs would bill several minutes for
+well under one minute of compute — the same reasoning already applied in
+`charge-points-server`'s and `charge-points-frontend`'s own workflows. A
+Husky pre-commit hook runs `lint-staged`, which applies Prettier to staged
+files and, for staged `.ts/.tsx/.js/.jsx` files, ESLint (`--fix`) followed by
 `vitest related --run` (only the tests affected by the staged files, not the
 full suite).
 
