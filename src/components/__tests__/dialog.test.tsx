@@ -56,6 +56,19 @@ describe("Dialog", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
+  it("SHOULD name the close button after closeLabel WHEN one is given", () => {
+    render(
+      <Dialog open>
+        <DialogContent closeLabel="Fermer">
+          <DialogTitle>Visite</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    expect(screen.getByRole("button", { name: "Fermer" })).not.toBeNull();
+    expect(screen.queryByRole("button", { name: "Close" })).toBeNull();
+  });
+
   it("SHOULD report open changes WHEN controlled", () => {
     const changes: boolean[] = [];
     renderDialog({ open: true, onOpenChange: (open) => changes.push(open) });

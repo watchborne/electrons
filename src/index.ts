@@ -49,6 +49,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogContentProps,
 } from "./components/dialog";
 export {
   AlertDialog,
