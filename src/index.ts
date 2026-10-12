@@ -65,3 +65,16 @@ export {
   AlertDialogCancel,
 } from "./components/alert-dialog";
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./components/popover";
+export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+  type CommandDialogProps,
+} from "./components/command";
+export { Calendar, CalendarDayButton } from "./components/calendar";
