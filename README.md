@@ -67,24 +67,34 @@ render correctly, a consuming app needs:
    };
    ```
 
-## 🧩 What's exported (v0.1.0)
+## 🧩 What's exported (v0.5.0)
 
-The first pass exports the most basic, already-reused primitives from
-`charge-points-frontend`, unchanged in behavior:
+Every component here was promoted from `charge-points-frontend`, once it was
+generic and reused in several places.
 
-- `Button`, `Badge`, `Input`, `Label`, `Switch` — form/action primitives
-  (from `components/ui/*`, shadcn-generated originally)
+- `Button`, `Badge`, `Input`, `Textarea`, `Label`, `Switch` — form/action
+  primitives
 - `Tabs`, `Table`, `Collapsible` — layout/structure primitives
 - `Callout` — inline message box (`default` / `info` / `error` / `warning` /
   `success`)
-- `Tag`, `Loader`, `Skeleton`, `StatCard` — small reusable display components
+- `Tag`, `ColorPill`, `Loader`, `Skeleton`, `StatCard` — small reusable
+  display components (`StatusPill` is kept as a deprecated alias of
+  `ColorPill`)
+- `Tooltip` — Radix tooltip (`TooltipProvider`, `TooltipTrigger`,
+  `TooltipContent`)
+- `Dialog`, `AlertDialog`, `Popover` — overlays. `DialogContent` (and
+  `CommandDialog`) take a `closeLabel` prop for the close button's
+  screen-reader text (default `"Close"`): the package has no copy of its own,
+  so pass a translated string from the app
+- `DropdownMenu`, `Select` — menu-like primitives
+- `Command` (cmdk) and `Calendar` (react-day-picker) — list/search and date
+  grid primitives
 
-Not exported yet (left in the app, either more composite/config-heavy, or
-tied to app-specific types/i18n): `Dialog`, `AlertDialog`, `Popover`,
-`DropdownMenu`, `Select`, `Command`, `Calendar`, `Datepicker`, `Form`,
-`ConnectorStatusIcon`, `WsStatusBadge`. These are good candidates for a
-follow-up export once this package is published and wired up in
-`charge-points-frontend`.
+Not exported (left in the app, tied to app-specific types, state or i18n):
+`Datepicker` (popover + calendar wired to the app's date formatting and
+locale), `Form` (`react-hook-form` coupling), `ConnectorStatusIcon`,
+`WsStatusBadge`. The generic display/interaction components in the app's
+`common/` folder are tracked separately for promotion.
 
 ## Commands
 
