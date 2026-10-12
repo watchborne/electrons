@@ -89,12 +89,20 @@ generic and reused in several places.
 - `DropdownMenu`, `Select` — menu-like primitives
 - `Command` (cmdk) and `Calendar` (react-day-picker) — list/search and date
   grid primitives
+- `ActionsDropdown`, `StatusActionDropdown` — "more actions" and change-status
+  menus built on `DropdownMenu`. The default icon-only trigger of
+  `ActionsDropdown` takes its accessible name from `triggerLabel`
+- `FormDialog` — a `Dialog` around a caller-owned form, with cancel/submit
+  buttons (`submitLabel`, `cancelLabel`, `closeLabel` are props; `isLoading`
+  drives the submit button's `loading` state)
+- `StatsBreakdown` (a titled grid of `StatCard`s) and `SkeletonGrid` (a grid
+  of loading placeholders)
 
 Not exported (left in the app, tied to app-specific types, state or i18n):
 `Datepicker` (popover + calendar wired to the app's date formatting and
 locale), `Form` (`react-hook-form` coupling), `ConnectorStatusIcon`,
-`WsStatusBadge`. The generic display/interaction components in the app's
-`common/` folder are tracked separately for promotion.
+`WsStatusBadge`, and `GenericStatusBadge` (its only job is the `next-intl`
+lookup around `ColorPill`).
 
 ## Commands
 
