@@ -1,6 +1,7 @@
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export { Input } from "./components/input";
+export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
 export { Switch } from "./components/switch";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
@@ -30,3 +31,10 @@ export {
 export { Loader } from "./components/loader";
 export { Skeleton } from "./components/skeleton";
 export { StatCard } from "./components/stat-card";
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+  type TooltipPosition,
+} from "./components/tooltip";
