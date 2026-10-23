@@ -161,15 +161,23 @@ jobs:
           TAG: ${{ needs.setup-and-bump.outputs.tag }}
         # Notes come from GitHub's generate-notes API (merged PRs since the
         # previous release), same as charge-points-server and -frontend. Each PR
-        # URL is rewritten into an explicit `[#N](url)` link, and the title keeps
-        # the `<version> (<release date>)` shape, e.g. `0.39.2 (2026-10-23)`.
+        # URL is rewritten into an explicit `[#N](url)` link. The release is
+        # titled with the tag (`v0.39.2`) and its description opens with
+        # `## [0.39.2](<compare url>) (2026-10-23)`, the previous tag being read
+        # from the generated "Full Changelog" line.
         run: |
           VERSION="${TAG#v}"
-          TITLE="$VERSION ($(date -u +%F))"
           NOTES=$(gh api "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
             -f tag_name="$TAG" --jq .body)
           NOTES=$(printf '%s\n' "$NOTES" | sed -E "s|https://github\.com/${GITHUB_REPOSITORY}/pull/([0-9]+)|[#\1](&)|g")
-          gh release create "$TAG" --verify-tag --latest --title "$TITLE" --notes "$NOTES"
+          PREVIOUS_TAG=$(printf '%s\n' "$NOTES" | sed -nE "s|.*/compare/(.+)\.\.\.${TAG}\$|\1|p" | tail -n1)
+          if [ -n "$PREVIOUS_TAG" ]; then
+            HEADER="## [$VERSION](https://github.com/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${TAG}) ($(date -u +%F))"
+          else
+            HEADER="## $VERSION ($(date -u +%F))"
+          fi
+          gh release create "$TAG" --verify-tag --latest --title "$TAG" \
+            --notes "$(printf '%s\n\n%s' "$HEADER" "$NOTES")"
 
   notify-dependents:
     runs-on: ubuntu-26.04
