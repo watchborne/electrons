@@ -151,70 +151,25 @@ jobs:
       - setup-and-bump
     outputs:
       version: ${{ needs.setup-and-bump.outputs.tag }}
-      changelog: ${{ steps.changelog.outputs.body }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ${{ needs.setup-and-bump.outputs.tag }}
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: package-lock.json
-
-      - name: Install conventional-changelog
-        run: npm install -g conventional-changelog-cli@^5
-
-      - name: Generate changelog
-        id: changelog
-        run: |
-          # HEAD is tagged with the release version, so conventional-changelog
-          # treats that tag as an already-published release. Use --release-count 2
-          # so the release being cut (previous tag..current tag) is included.
-          #
-          # v0.2.2's and v0.3.0's bodies came out empty because the
-          # conventional subject lives on the PR merge commit here, and
-          # conventional-changelog drops merge commits unless told otherwise
-          # (scripts/changelog-config.mjs).
-          #
-          # The section wanted is also at no fixed position or header level:
-          # the Angular writer heads a release `# ` when its patch is 0 and
-          # `## ` otherwise, and an empty "still unreleased" section can
-          # precede the real one. So take the first section (either level)
-          # with non-blank content under its header, the filter
-          # watchborne/charge-points-frontend and charge-points-server settled
-          # on (see the latter's #377/#382).
-          CHANGELOG=$(conventional-changelog -p angular -n scripts/changelog-config.mjs --release-count 2 | awk '
-            /^# |^## / {
-              if (has_content) { print header; print body; exit }
-              header = $0; body = ""; has_content = 0; next
-            }
-            {
-              body = body $0 "\n"
-              if ($0 !~ /^[[:space:]]*$/) has_content = 1
-            }
-            END { if (has_content) { print header; print body } }
-          ')
-          if [ -z "$(printf '%s' "$CHANGELOG" | tr -d '[:space:]')" ]; then
-            CHANGELOG="Release ${{ needs.setup-and-bump.outputs.tag }}"
-          fi
-          {
-            echo "body<<EOF"
-            echo "$CHANGELOG"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
+      # The tag already exists (pushed by the previous job), so no checkout is
+      # needed: GH_REPO points `gh` at this repository.
       - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.setup-and-bump.outputs.tag }}
-          body: ${{ steps.changelog.outputs.body }}
-          draft: false
-          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.setup-and-bump.outputs.tag }}
+        # Notes come from GitHub's generate-notes API (merged PRs since the
+        # previous release), same as charge-points-server and -frontend. Each PR
+        # URL is rewritten into an explicit `[#N](url)` link, and the title keeps
+        # the `<version> (<release date>)` shape, e.g. `0.39.2 (2026-10-23)`.
+        run: |
+          VERSION="${TAG#v}"
+          TITLE="$VERSION ($(date -u +%F))"
+          NOTES=$(gh api "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+            -f tag_name="$TAG" --jq .body)
+          NOTES=$(printf '%s\n' "$NOTES" | sed -E "s|https://github\.com/${GITHUB_REPOSITORY}/pull/([0-9]+)|[#\1](&)|g")
+          gh release create "$TAG" --verify-tag --latest --title "$TITLE" --notes "$NOTES"
 
   notify-dependents:
     runs-on: ubuntu-26.04
