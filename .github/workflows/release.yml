@@ -149,8 +149,6 @@ jobs:
     needs:
       - publish
       - setup-and-bump
-    outputs:
-      version: ${{ needs.setup-and-bump.outputs.tag }}
     steps:
       # The tag already exists (pushed by the previous job), so no checkout is
       # needed: GH_REPO points `gh` at this repository.
@@ -178,19 +176,3 @@ jobs:
           fi
           gh release create "$TAG" --verify-tag --latest --title "$TAG" \
             --notes "$(printf '%s\n\n%s' "$HEADER" "$NOTES")"
-
-  notify-dependents:
-    runs-on: ubuntu-26.04
-    needs:
-      - generate-release
-      - setup-and-bump
-    steps:
-      - name: Notify charge-points-frontend
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ needs.setup-and-bump.outputs.tag }}
-        run: |
-          gh api repos/watchborne/charge-points-frontend/dispatches \
-            -f event_type=electrons-released \
-            -f "client_payload[version]=$VERSION"
